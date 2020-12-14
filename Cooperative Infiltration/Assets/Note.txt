@@ -1,0 +1,14 @@
+Créer des boutons qu'on va lier avec des tags et du codes.
+faire choix des roles après les connexions
+
+continuer les lien avec canvas 
+si motivation re essayer le choix des roles
+quand canvas terminer les lier aux terminaux
+
+test si controle fonctionne bien
+
+refaire un teminal et voir si ça fonctionne, le je sais pas 
+
+ajouter porte sp sur la carte et peut-etre les terminaux à discuter 
+
+choix joueur regarder commment communique les info au joueur 2 
