@@ -16,7 +16,7 @@ public class TimerScript : MonoBehaviour
 
 	Text TxtCountDown;
 
-	Vector3 temp,tempRot;
+	//Vector3 temp,tempRot;
 
 
 
@@ -32,11 +32,11 @@ public class TimerScript : MonoBehaviour
 
 	}
 
-	public void PosRetour( Vector3 posTem, Vector3 rotTemp)
-	{
-		temp = posTem;
-		tempRot = rotTemp;
-	}
+	//public void PosRetour( Vector3 posTem, Vector3 rotTemp)
+	//{
+	//	temp = posTem;
+	//	tempRot = rotTemp;
+	//}
 
 
 	IEnumerator Timer()
@@ -47,22 +47,30 @@ public class TimerScript : MonoBehaviour
 			startCountDown--;
 
 			TxtCountDown.text = "00 : " + startCountDown;
+			Debug.Log("tic tac");
 
-			if ((startCountDown == timeDelta) || (startCountDown == timeDelta * 2) || (startCountDown == timeDelta * 3) || (startCountDown == timeDelta * 4) || (startCountDown == timeDelta * 5) || (startCountDown == timeDelta * 6))
-			{
-				//Debug.Log("time");
-				delay = GameObject.Find("Challenge").GetComponent<ChallengeScript>().delay;
-				delay = delay / 2;
-				GameObject.Find("Challenge").GetComponent<ChallengeScript>().delay = delay;
-			}
+			//if ((startCountDown == timeDelta) || (startCountDown == timeDelta * 2) || (startCountDown == timeDelta * 3) || (startCountDown == timeDelta * 4) || (startCountDown == timeDelta * 5) || (startCountDown == timeDelta * 6))
+			//{
+			//	//Debug.Log("time");
+			//	delay = GameObject.Find("Challenge").GetComponent<ChallengeScript>().delay;
+			//	delay = delay / 2;
+			//	GameObject.Find("Challenge").GetComponent<ChallengeScript>().delay = delay;
+			//}
 			if(startCountDown==0)
 			{
-				GameObject.Find("Timer").GetComponent<TimerScript>().Stop();
-				challenge.SetActive(false);
-				GameObject.Find("Player").transform.position = temp;
-				GameObject.Find("Player").transform.eulerAngles = tempRot;
+				//GameObject.Find("Timer").GetComponent<TimerScript>().Stop();
+
 				cPuzzle.SetActive(false);
-				gm.pActiver = false;
+				//gm.pActiver = false;
+				//gm.timeOver = true;
+				gm.StopPuzzle();
+				Stop();
+
+				//challenge.SetActive(false);
+				//GameObject.Find("Player").transform.position = temp;
+				//GameObject.Find("Player").transform.eulerAngles = tempRot;
+				//cPuzzle.SetActive(false);
+				//gm.pActiver = false;
 
 			}
 
@@ -72,13 +80,14 @@ public class TimerScript : MonoBehaviour
 
 	public void Go()
 	{
-		//startCountDown = 60;
+		startCountDown = 60;
+		Debug.Log("go");
 		StartCoroutine(Timer());
 	}
 
 	public void Stop()
 	{
-		startCountDown = 60;
+		//startCountDown = 60;
 		StopCoroutine(Timer());
 	}
 }

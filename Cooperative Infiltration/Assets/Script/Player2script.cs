@@ -67,8 +67,9 @@ public class Player2script : NetworkBehaviour
            }
 
             playerUIPrefab.SetActive(true);
+            playerUIPrefab.transform.GetChild(2).gameObject.GetComponent<TimerScript>().Go();
             //GameObject.Find("CPuzzle").SetActive(true);
-            
+
             namePorte = porte;
           //  Debug.Log(namePorte);
             gm.Init();
@@ -118,6 +119,7 @@ public class Player2script : NetworkBehaviour
 
             }
             playerUIPrefab.SetActive(true);
+            playerUIPrefab.transform.GetChild(2).gameObject.GetComponent<TimerScript>().Go();
             //GameObject.Find("CPuzzle").SetActive(true);
 
             namePartie = partie;
@@ -150,7 +152,7 @@ public class Player2script : NetworkBehaviour
     public void OuvrePorte(int typePorte)
     {
         Debug.Log(namePorte + "player2");
-        GameObject.Find(namePorte).GetComponentInChildren<Animator>().SetBool("open", true);
+        GameObject.Find(namePorte).transform.GetChild(0).GetComponentInChildren<Animator>().SetBool("open", true);
         GameObject.Find(namePorte).GetComponent<BoxCollider>().enabled = false;
         GameObject.Find(namePorte).transform.GetChild(1).GetComponent<SpriteRenderer>().color = Color.green;
         if (typePorte==1)
@@ -235,6 +237,7 @@ public class Player2script : NetworkBehaviour
         
         GameObject tPorteN = GameObject.Find(tPorte);
         tPorteN.GetComponentInChildren<Animator>().SetBool("open", isOpen);
+        tPorteN.transform.GetChild(0).GetComponentInChildren<Animator>().SetBool("open", isOpen);
         tPorteN.GetComponent<DetecteZoneScript>().activer = isOpen;
         if(isOpen)
         {
@@ -245,6 +248,38 @@ public class Player2script : NetworkBehaviour
             tPorteN.transform.GetChild(1).GetComponent<SpriteRenderer>().color = Color.red;
         }
 
+    }
+
+    [Command]
+    public void CmdStopPuzzle()
+	{
+        RpcStopPuzzle();
+
+
+	}
+
+    [ClientRpc]
+    void RpcStopPuzzle()
+	{
+        gm.pActiver = false;
+        gm.timeOver = false;
+
+        GameObject.Find("Player1").GetComponent<PlayerScript>().RpcStopPuzzle();
+    }
+
+
+    [Command]
+    public void CmdFinGame()
+    {
+        RpcFinGame();
+    }
+
+
+    void RpcFinGame()
+    {
+        GameObject uiFinGame = GameObject.Find("GameHUD");
+
+        uiFinGame.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     //public void Sauvegard()

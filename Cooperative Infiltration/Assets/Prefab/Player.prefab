@@ -61,15 +61,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c2271bf0ceaa9e4bb179c089da9fde1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  rot: 100
-  shootForce: 30
-  tir: {fileID: 0}
-  balle: {fileID: 6210978337319566304, guid: 781c3480417caf64f80d416e8b667a07, type: 3}
-  pv: 100
-  nouvelleZone: {fileID: 0}
-  temp: {x: 0, y: 0, z: 0}
-  tempRot: {x: 0, y: 0, z: 0}
+  ListPath: []
 --- !u!114 &104076906938446696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +116,7 @@ MonoBehaviour:
   m_VelocityThreshold: 0.0001
   m_SnapThreshold: 5
   m_InterpolateRotation: 10
-  m_InterpolateMovement: 1
+  m_InterpolateMovement: 2
 --- !u!114 &720793853485373622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +148,7 @@ MonoBehaviour:
   cBouton2: {fileID: 5111641807139416440, guid: eb0f143f4bb72284399ef84c670d2faa,
     type: 3}
   pointMap: {fileID: 1887227374644776063}
+  idJ: 7
 --- !u!114 &8007904910603635565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,10 +219,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 55
   groundCheckDistance: 0.05
-  maxSpeedOnGround: 10
+  maxSpeedOnGround: 7
   movementSharpnessOnGround: 15
   maxSpeedCrouchedRatio: 0.5
-  maxSpeedInAir: 10
+  maxSpeedInAir: 2
   accelerationSpeedInAir: 25
   sprintSpeedModifier: 2
   killHeight: -50
@@ -263,7 +256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a650b11f4a6a5e4880ad034f66307fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 100
   criticalHealthRatio: 0.3
 --- !u!114 &1308645119006908541
 MonoBehaviour:

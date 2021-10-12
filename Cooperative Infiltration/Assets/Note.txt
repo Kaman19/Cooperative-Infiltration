@@ -12,3 +12,9 @@ refaire un teminal et voir si ça fonctionne, le je sais pas
 ajouter porte sp sur la carte et peut-etre les terminaux à discuter 
 
 choix joueur regarder commment communique les info au joueur 2 
+
+=======================================
+
+fair condition de victoire et défaite 
+
+Playtest

@@ -147,6 +147,24 @@ public class PlayerCharacterController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+   //         if(PauseMenu.isOn)
+   //         {
+   //             Cursor.lockState = CursorLockMode.None;
+   //             Cursor.visible = true;
+   //         }
+   //         else
+			//{
+   //             Cursor.lockState = CursorLockMode.Locked;
+   //             Cursor.visible = false;
+   //         }
+        }
+
+        if (PauseMenu.isOn)
+		{
+            return;
+		}
         // check for Y kill
         if (!isDead && transform.position.y < killHeight)
         {

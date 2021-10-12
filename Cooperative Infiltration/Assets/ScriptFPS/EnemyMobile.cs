@@ -61,14 +61,14 @@ public class EnemyMobile : MonoBehaviour
 
         float moveSpeed = m_EnemyController.m_NavMeshAgent.velocity.magnitude;
 
-        // Update animator speed parameter
-       // animator.SetFloat(k_AnimMoveSpeedParameter, moveSpeed);
+		// Update animator speed parameter
+		animator.SetFloat(k_AnimMoveSpeedParameter, moveSpeed);
 
-        // changing the pitch of the movement sound depending on the movement speed
-       // m_AudioSource.pitch = Mathf.Lerp(PitchDistortionMovementSpeed.min, PitchDistortionMovementSpeed.max, moveSpeed / m_EnemyController.m_NavMeshAgent.speed);
-    }
+		// changing the pitch of the movement sound depending on the movement speed
+		// m_AudioSource.pitch = Mathf.Lerp(PitchDistortionMovementSpeed.min, PitchDistortionMovementSpeed.max, moveSpeed / m_EnemyController.m_NavMeshAgent.speed);
+	}
 
-    void UpdateAIStateTransitions()
+	void UpdateAIStateTransitions()
     {
         // Handle transitions 
         switch (aiState)
@@ -123,8 +123,8 @@ public class EnemyMobile : MonoBehaviour
 
     void OnAttack()
     {
-       // animator.SetTrigger(k_AnimAttackParameter);
-    }
+		animator.SetTrigger(k_AnimAttackParameter);
+	}
 
     void OnDetectedTarget()
     {
@@ -143,8 +143,8 @@ public class EnemyMobile : MonoBehaviour
            // AudioUtility.CreateSFX(onDetectSFX, transform.position, AudioUtility.AudioGroups.EnemyDetection, 1f);
         }
 
-        //animator.SetBool(k_AnimAlertedParameter, true);
-    }
+		animator.SetBool(k_AnimAlertedParameter, true);
+	}
 
     void OnLostTarget()
     {
@@ -169,6 +169,6 @@ public class EnemyMobile : MonoBehaviour
             randomHitSparks[n].Play();
         }
 
-        //animator.SetTrigger(k_AnimOnDamagedParameter);
-    }
+		animator.SetTrigger(k_AnimOnDamagedParameter);
+	}
 }

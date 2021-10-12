@@ -14,18 +14,18 @@ public class ProgressBarScript : MonoBehaviour
 	void Start()
     {
 		bar = transform.Find("bar").GetComponent<Image>();
-		pvBase = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().pv;
+		//pvBase = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().pv;
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-		val = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().pv;
+ //   // Update is called once per frame
+ //   void Update()
+ //   {
+	//	val = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerScript>().pv;
 
-		pc = val / pvBase;
+	//	pc = val / pvBase;
 
-		pc = pc * 100;
+	//	pc = pc * 100;
 
-		bar.fillAmount = pc / 100;
-	}
+	//	bar.fillAmount = pc / 100;
+	//}
 }

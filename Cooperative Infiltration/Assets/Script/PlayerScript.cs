@@ -6,21 +6,25 @@ using System.IO;
 
 public class PlayerScript : NetworkBehaviour
 {
-	[SerializeField] float speed=4f,rot=80f, shootForce = 100f;
+	//[SerializeField] float speed=4f,rot=80f, shootForce = 100f;
 
-	[SerializeField] GameObject tir, balle;
+	//[SerializeField] GameObject tir, balle;
 
-	float axisH, axisV,axiMX,axiMY;
+	//float axisH, axisV,axiMX,axiMY;
 
-	public float pv = 100;
+	//public float pv = 100;
 	GameManagerScript gm;
 
-	public GameObject nouvelleZone;
+	GameObject HUDGame; 
 
-	[SerializeField]
-	Vector3 temp, tempRot;
+	//public GameObject nouvelleZone;
+
+	//[SerializeField]
+	//Vector3 temp, tempRot;
 
 	string namePorte = "",namePartie="";
+
+	public List<PatrolPath> ListPath = new List<PatrolPath>();
 
 
 
@@ -28,40 +32,47 @@ public class PlayerScript : NetworkBehaviour
 	void Start()
     {
 		gm = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
-		nouvelleZone = GameObject.Find("Spawn");
+		//nouvelleZone = GameObject.Find("Spawn");
+
+		foreach (var patrol in FindObjectsOfType<PatrolPath>())
+		{
+			ListPath.Add(patrol);
+		}
 	}
 
     // Update is called once per frame
     void Update()
     {
 
-		//if(Input.GetKeyDown(KeyCode.Mouse0))
+		//if (Input.GetKeyDown(KeyCode.F))
 		//{
-		//	Shoot();
+		//	//Shoot();
 		//}
 
-		
 
-    }
 
-	private void FixedUpdate()
-	{
-		axisH = Input.GetAxis("Horizontal");
-		axisV = Input.GetAxis("Vertical");
 
-		axiMX = Input.GetAxis("Mouse X");
-		axiMY = Input.GetAxis("Mouse Y");
 
-		transform.Translate(Vector3.right * axisH * speed * Time.deltaTime);
-		transform.Translate(Vector3.forward * axisV * speed * Time.deltaTime);
-
-		transform.Rotate(Vector3.up * axiMX * rot * Time.deltaTime);
-
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			//CmdDamage("Player2");
-		}
 	}
+
+	//private void FixedUpdate()
+	//{
+	//	axisH = Input.GetAxis("Horizontal");
+	//	axisV = Input.GetAxis("Vertical");
+
+	//	axiMX = Input.GetAxis("Mouse X");
+	//	axiMY = Input.GetAxis("Mouse Y");
+
+	//	transform.Translate(Vector3.right * axisH * speed * Time.deltaTime);
+	//	transform.Translate(Vector3.forward * axisV * speed * Time.deltaTime);
+
+	//	transform.Rotate(Vector3.up * axiMX * rot * Time.deltaTime);
+
+	//	if (Input.GetKeyDown(KeyCode.Space))
+	//	{
+	//		//CmdDamage("Player2");
+	//	}
+	//}
 
 	[Command]
 	public void CmdDamage(string _playerID, string porte,int cas)
@@ -78,6 +89,28 @@ public class PlayerScript : NetworkBehaviour
 		//Debug.Log(porte);
 		RpcTakeDammageT(_playerID, partieC);
 
+	}
+
+	[Command]
+	public void CmdFinGame(bool _isWin)
+	{
+		RpcFinGame(_isWin);
+	}
+
+	[ClientRpc]
+	void RpcFinGame(bool isWin)
+	{
+		GameObject uiFinGame = GameObject.Find("GameHUD");
+
+		uiFinGame.transform.GetChild(1).gameObject.SetActive(true);
+		uiFinGame.GetComponent<EndGameScipt>().EcritAnnaonce(isWin);
+
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+
+		//GameObject p2 = GameObject.Find("Player2");
+
+		//p2.GetComponent<Player2script>().CmdFinGame();
 	}
 
 
@@ -103,11 +136,11 @@ public class PlayerScript : NetworkBehaviour
 	[ClientRpc]
 	public void RpcRetourTest()
 	{
-		transform.position = temp;
-		transform.eulerAngles = tempRot;
+		//transform.position = temp;
+		//transform.eulerAngles = tempRot;
 		gm.pActiver = false;
 		Debug.Log(namePorte);
-		GameObject.Find(namePorte).GetComponentInChildren<Animator>().SetBool("open", true);
+		GameObject.Find(namePorte).transform.GetChild(0).GetComponentInChildren<Animator>().SetBool("open", true);
 		
 		GameObject.Find(namePorte).GetComponent<BoxCollider>().enabled = false;
 
@@ -116,39 +149,103 @@ public class PlayerScript : NetworkBehaviour
 	[ClientRpc]
 	public void RpcRetourTestT()
 	{
-		transform.position = temp;
-		transform.eulerAngles = tempRot;
+		//transform.position = temp;
+		//transform.eulerAngles = tempRot;
 		gm.pActiver = false;
 		
 
 	}
 
+	[Command]
+	public void CmdSpawnE(GameObject ennPreb,GameObject pos)
+	{
+		//Transform pos = GameObject.Find("SpawnE").transform;
+
+		GameObject e = Instantiate(ennPreb,pos.transform);
+		//e.transform.position = spawn.transform.position;
+		NetworkServer.Spawn(e);
+
+		foreach (var chemin in ListPath)
+		{
+			for (int i = 0; i < chemin.enemiesToAssign.Count; i++)
+			{
+				if (chemin.enemiesToAssign[i] == null)
+				{
+					chemin.enemiesToAssign[i] = e.GetComponent<EnemyController>();
+					chemin.enemiesToAssign[i].patrolPath = chemin.GetComponent<PatrolPath>();
+
+
+				}
+			}
+		}
+	}
+
+
+	[Command]
+	public void CmdStopPuzzle()
+	{
+		//RpcStopPuzzle();
+		gm.pActiver = false;
+		gm.timeOver = false;
+
+	}
+
+	[ClientRpc]
+	public void RpcStopPuzzle()
+	{
+		gm.pActiver = false;
+		gm.timeOver = false;
+	}
+
+
+	void InstantiateHUD()
+	{
+		HUDGame = GameObject.Find("GameHUD");
+	}
 
 	//void Shoot()
 	//{
 	//	GameObject b;
 
-		
+
 	//	b = Instantiate(balle, tir.transform.position, Quaternion.identity);
 	//	b.GetComponent<Rigidbody>().velocity = tir.transform.up * shootForce;
 	//}
 
-	public void TakeDamage()
+	//public void TakeDamage()
+	//{
+	//	pv -= 10;
+	//}
+
+	private void OnTriggerEnter(Collider other)
 	{
-		pv -= 10;
+		if((other.tag=="Porte" || other.tag == "TermPorteSp" || other.tag == "TermZone") && isLocalPlayer)
+		{
+			InstantiateHUD();
+			HUDGame.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
+		}
+	}
+
+	private void OnTriggerExit(Collider other)
+	{
+		if ((other.tag == "Porte" || other.tag == "TermPorteSp" || other.tag == "TermZone") && isLocalPlayer)
+		{
+			
+			HUDGame.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(false);
+		}
 	}
 
 	private void OnTriggerStay(Collider other)
 	{
 		if (other.tag == "Porte")
 		{
-			if (Input.GetKeyDown(KeyCode.P) && !gm.pActiver)
+			if (Input.GetKeyDown(KeyCode.E) && !gm.pActiver)
 			{
-				Debug.Log("cas1");
-				temp = gameObject.transform.position;
-				tempRot = gameObject.transform.eulerAngles;
-				gameObject.transform.position = nouvelleZone.transform.position;
-				gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+				//Debug.Log("cas1");
+				//temp = gameObject.transform.position;
+				//tempRot = gameObject.transform.eulerAngles;
+				//gameObject.transform.position = nouvelleZone.transform.position;
+				//gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
 				Debug.Log("test");
 				//CmdDamage("Player2");
 				other.GetComponent<DetecteZoneScript>().Pz();
@@ -161,14 +258,14 @@ public class PlayerScript : NetworkBehaviour
 
 		if (other.tag == "TermPorteSp")
 		{
-			if (Input.GetKeyDown(KeyCode.P) && !gm.pActiver)
+			if (Input.GetKeyDown(KeyCode.E) && !gm.pActiver)
 			{
-				Debug.Log("cas2");
-				temp = gameObject.transform.position;
-				tempRot = gameObject.transform.eulerAngles;
-				gameObject.transform.position = new Vector3(113, 6, -43);
-				//gameObject.transform.position = nouvelleZone.transform.position;
-				gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+			//	Debug.Log("cas2");
+			//	temp = gameObject.transform.position;
+			//	tempRot = gameObject.transform.eulerAngles;
+			//	gameObject.transform.position = new Vector3(113, 6, -43);
+			//	//gameObject.transform.position = nouvelleZone.transform.position;
+			//	gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
 				Debug.Log("test");
 				//CmdDamage("Player2");
 				other.GetComponent<DetecteZoneTerm>().Pz();
@@ -191,14 +288,14 @@ public class PlayerScript : NetworkBehaviour
 
 		if (other.tag == "TermZone")
 		{
-			if (Input.GetKeyDown(KeyCode.P) && !gm.pActiver)
+			if (Input.GetKeyDown(KeyCode.E) && !gm.pActiver)
 			{
-				Debug.Log("cas3");
-				temp = gameObject.transform.position;
-				tempRot = gameObject.transform.eulerAngles;
-				gameObject.transform.position = nouvelleZone.transform.position;
-				gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-				Debug.Log("test");
+				//Debug.Log("cas3");
+				//temp = gameObject.transform.position;
+				//tempRot = gameObject.transform.eulerAngles;
+				//gameObject.transform.position = nouvelleZone.transform.position;
+				//gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+				//Debug.Log("test");
 				other.GetComponent<TerminalCarte>().Pz();
 				if (other.GetComponent<TerminalCarte>().nTerm == 1)
 				{

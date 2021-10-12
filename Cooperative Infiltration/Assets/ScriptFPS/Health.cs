@@ -12,6 +12,10 @@ public class Health : MonoBehaviour
     public UnityAction<float> onHealed;
     public UnityAction onDie;
 
+    PlayerScript m_playerS;
+
+    GameManagerScript gm;
+
     public float currentHealth { get; set; }
     public bool invincible { get; set; }
     public bool canPickup() => currentHealth < maxHealth;
@@ -24,6 +28,10 @@ public class Health : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+
+        m_playerS = GetComponent<PlayerScript>();
+
+        gm = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
     }
 
     public void Heal(float healAmount)
@@ -83,6 +91,12 @@ public class Health : MonoBehaviour
             if (onDie != null)
             {
                 m_IsDead = true;
+               if(m_playerS!=null)
+			   {
+                    m_playerS.CmdFinGame(false);
+               }
+
+                gm.SpawnE();
                 onDie.Invoke();
             }
         }

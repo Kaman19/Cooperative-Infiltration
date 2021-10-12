@@ -9,7 +9,7 @@ public class DetecteZoneTerm : MonoBehaviour
 
 	public GameObject cPuzzle = null, challenge, nouvelleZone;
 
-	Vector3 temp, tempRot;
+	//Vector3 temp, tempRot;
 
 	GameManagerScript gm;
 
@@ -64,21 +64,21 @@ public class DetecteZoneTerm : MonoBehaviour
 
 	private void OnTriggerStay(Collider other)
 	{
-		if (other.tag == "Player")
-		{
-			if (Input.GetKeyDown(KeyCode.M) && !gm.pActiver)
-			{
-				temp = other.gameObject.transform.position;
-				tempRot = other.gameObject.transform.eulerAngles;
-				other.gameObject.transform.position = nouvelleZone.transform.position;
-				other.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-				//ActivePuzzle("Player2");
-				challenge.SetActive(true);
-				challenge.gameObject.GetComponent<ChallengeScript>().activation = true;
+		//if (other.tag == "Player")
+		//{
+		//	if (Input.GetKeyDown(KeyCode.M) && !gm.pActiver)
+		//	{
+		//		temp = other.gameObject.transform.position;
+		//		tempRot = other.gameObject.transform.eulerAngles;
+		//		other.gameObject.transform.position = nouvelleZone.transform.position;
+		//		other.gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
+		//		//ActivePuzzle("Player2");
+		//		challenge.SetActive(true);
+		//		challenge.gameObject.GetComponent<ChallengeScript>().activation = true;
 
-				//cPuzzle.GetComponentInChildren<Button>().GetComponent<ResetScript>().Recommencer();
-			}
-		}
+		//		//cPuzzle.GetComponentInChildren<Button>().GetComponent<ResetScript>().Recommencer();
+		//	}
+		//}
 	}
 
 
@@ -91,8 +91,8 @@ public class DetecteZoneTerm : MonoBehaviour
 		gm.pActiver = true;
 		//Isme = true;
 		//ActivePuzzle("Player2");
-		challenge.SetActive(true);
-		challenge.gameObject.GetComponent<ChallengeScript>().activation = true;
+		//challenge.SetActive(true);
+		//challenge.gameObject.GetComponent<ChallengeScript>().activation = true;
 
 	}
 

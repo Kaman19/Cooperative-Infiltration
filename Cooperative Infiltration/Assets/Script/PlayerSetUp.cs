@@ -26,16 +26,36 @@ public class PlayerSetUp : NetworkBehaviour
 
     GameObject player2;
 
-    int idtest=0;
+    int idtest=0,id=0;
+
+    [SerializeField]
+    int idJ = 4;
+
+    GameManagerScript gm;
 
 
 
     private void Start()
     {
-        
-        idtest = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
-        string _ID = "Player" + idtest;
-        transform.name = _ID;
+        gm = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
+
+        //idtest = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
+        id = int.Parse(GetComponent<NetworkIdentity>().netId.ToString());
+
+        if(id== idJ)
+		{
+            idtest = 1;
+            string _ID = "Player" + idtest;
+            transform.name = _ID;
+        }
+
+        if(id> idJ)
+		{
+            idtest = 2;
+            string _ID = "Player" + idtest;
+            transform.name = _ID;
+        }
+       
 
         if (!isLocalPlayer)
         {
@@ -129,8 +149,11 @@ public class PlayerSetUp : NetworkBehaviour
 
             if (isLocalPlayer)
             {
-                GameObject.Find("GameHUD").SetActive(false);
-                if(idtest==1)
+                GameObject gHud = GameObject.Find("GameHUD");
+                gHud.transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+                gHud.transform.GetChild(0).GetChild(1).gameObject.SetActive(false);
+                gHud.transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                if (idtest==1)
                 {
                     transform.position = new Vector3(pos2.x, pos2.y + 2f, pos2.z); 
                 }
@@ -323,8 +346,29 @@ public class PlayerSetUp : NetworkBehaviour
         Choix.name = "CChoix";
     }
 
+
+
+    [Command]
+    public void CmdStopPuzzle()
+    {
+        //RpcStopPuzzle();
+        gm.pActiver = false;
+        gm.timeOver = false;
+
+    }
+
+    [ClientRpc]
+    public void RpcStopPuzzle()
+    {
+        gm.pActiver = false;
+        gm.timeOver = false;
+    }
+
     public void OnDisable()
     {
-
+        if(sceneCamera != null)
+		{
+            sceneCamera.gameObject.SetActive(true);
+		}
     }
 }

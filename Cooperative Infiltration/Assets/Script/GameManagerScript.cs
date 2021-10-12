@@ -30,16 +30,88 @@ public class GameManagerScript : MonoBehaviour
 
 	public bool pActiver = false;
 
+	public GameObject ennemiPrefab, spawn;
+
+	public List<PatrolPath> ListPath = new List<PatrolPath>();
+
+	PlayerScript m_player;
+	Player2script m_player2;
+	PlayerSetUp m_playerS;
+
+	public bool timeOver = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
-
+		
+		foreach(var patrol in FindObjectsOfType<PatrolPath>())
+		{
+			ListPath.Add(patrol);
+		}
+		 
 		
 
     }
 
-   public void ChangeSprite(Sprite sp)
+	private void Update()
+	{
+		//if (Input.GetKeyDown(KeyCode.T))
+		//{
+		//	SpawnE();
+		//}
+	}
+
+	
+	public void SpawnE()
+	{
+
+		if(m_player==null)
+		{
+			m_player = GameObject.Find("Player1").GetComponent<PlayerScript>();
+		}
+
+		m_player.CmdSpawnE(ennemiPrefab,spawn);
+
+		//GameObject e = Instantiate(ennemiPrefab, spawn.transform);
+		////e.transform.position = spawn.transform.position;
+		//NetworkServer.Spawn(e);
+
+		//foreach (var chemin in ListPath)
+		//{
+		//	for (int i = 0; i < chemin.enemiesToAssign.Count; i++)
+		//	{
+		//		if (chemin.enemiesToAssign[i] == null)
+		//		{
+		//			chemin.enemiesToAssign[i] = e.GetComponent<EnemyController>();
+		//			chemin.enemiesToAssign[i].patrolPath = chemin.GetComponent<PatrolPath>();
+
+
+		//		}
+		//	}
+		//}
+
+
+
+	}
+
+	public void StopPuzzle()
+	{
+		if (m_playerS == null)
+		{
+			m_playerS = GameObject.Find("Player2").GetComponent<PlayerSetUp>();
+		}
+
+		//if (m_player == null)
+		//{
+		//	m_player = GameObject.Find("Player1").GetComponent<PlayerScript>();
+		//}
+
+		m_playerS.CmdStopPuzzle();
+	}
+
+
+	public void ChangeSprite(Sprite sp)
 	{
 		GameObject.Find(temp).GetComponent<Button>().GetComponent<Image>().sprite = sp;
 	}

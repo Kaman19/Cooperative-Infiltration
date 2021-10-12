@@ -16,20 +16,20 @@ public class ObstacleScript : MonoBehaviour
         
     }
 
-	private void OnTriggerEnter(Collider other)
-	{
+	//private void OnTriggerEnter(Collider other)
+	//{
 
-		if(other.gameObject.tag=="Player")
-		{
-			other.gameObject.GetComponent<PlayerScript>().TakeDamage();
-            Destroy(gameObject);
-        }
+	//	if(other.gameObject.tag=="Player")
+	//	{
+	//		other.gameObject.GetComponent<PlayerScript>().TakeDamage();
+ //           Destroy(gameObject);
+ //       }
 
-        if(other.gameObject.tag=="Mur")
-        {
-            Destroy(gameObject);
-        }
+ //       if(other.gameObject.tag=="Mur")
+ //       {
+ //           Destroy(gameObject);
+ //       }
 
-		//Destroy(gameObject);
-	}
+	//	//Destroy(gameObject);
+	//}
 }

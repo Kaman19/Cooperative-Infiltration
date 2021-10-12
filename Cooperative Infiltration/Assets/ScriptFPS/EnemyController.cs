@@ -114,6 +114,8 @@ public class EnemyController : MonoBehaviour
     WeaponController[] m_Weapons;
     NavigationModule m_NavigationModule;
 
+    public bool isBack=false;
+
     void Start()
     {
         m_EnemyManager = FindObjectOfType<EnemyManager>();
@@ -182,6 +184,7 @@ public class EnemyController : MonoBehaviour
         }
 
         m_BodyFlashMaterialPropertyBlock = new MaterialPropertyBlock();
+       
 
         // Check if we have an eye renderer for this enemy
         if (m_EyeRendererData.renderer != null)
@@ -190,13 +193,16 @@ public class EnemyController : MonoBehaviour
             m_EyeColorMaterialPropertyBlock.SetColor("_EmissionColor", defaultEyeColor);
             m_EyeRendererData.renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock, m_EyeRendererData.materialIndex);
         }
+
+
+        
     }
 
     void Update()
     {
         EnsureIsWithinLevelBounds();
 
-        m_DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders);
+        m_DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders,isBack);
 
         Color currentColor = onHitBodyGradient.Evaluate((Time.time - m_LastTimeDamaged) / flashOnHitDuration);
         m_BodyFlashMaterialPropertyBlock.SetColor("_EmissionColor", currentColor);
@@ -474,4 +480,6 @@ public class EnemyController : MonoBehaviour
             m_LastTimeWeaponSwapped = Mathf.NegativeInfinity;
         }
     }
+
+    
 }

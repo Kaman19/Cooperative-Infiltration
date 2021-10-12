@@ -37,7 +37,7 @@ public class DetectionModule : MonoBehaviour
         //DebugUtility.HandleErrorIfNullFindObject<ActorsManager, DetectionModule>(m_ActorsManager, this);
     }
 
-    public virtual void HandleTargetDetection(Actor actor, Collider[] selfColliders)
+    public virtual void HandleTargetDetection(Actor actor, Collider[] selfColliders, bool isback)
     {
         // Handle known target detection timeout
         if (knownDetectedTarget && !isSeeingTarget && (Time.time - m_TimeLastSeenTarget) > knownTargetTimeout)
@@ -64,10 +64,11 @@ public class DetectionModule : MonoBehaviour
                     bool foundValidHit = false;
                     foreach (var hit in hits)
                     {
-                        if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                        if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance && !isback)
                         {
                             closestValidHit = hit;
                             foundValidHit = true;
+                            
                         }
                     }
 
@@ -140,4 +141,8 @@ public class DetectionModule : MonoBehaviour
             animator.SetTrigger(k_AnimAttackParameter);
         }
     }
+
+
+
+	
 }
